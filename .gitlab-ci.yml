@@ -1,7 +1,7 @@
 # This file is part of Eigen, a lightweight C++ template library
 # for linear algebra.
 #
-# Copyright (C) 2020 Arm Ltd. and Contributors
+# Copyright (C) 2023, The Eigen Authors
 #
 # This Source Code Form is subject to the terms of the Mozilla
 # Public License v. 2.0. If a copy of the MPL was not distributed
@@ -14,10 +14,21 @@ stages:
   - test
 
 variables:
-  BUILDDIR: builddir
-  EIGEN_CI_CMAKE_GENEATOR: "Ninja"
+  # Regular expression for controlling which jobs are run.
+  EIGEN_CI_JOB_REGEX: ""
+  # CMake build directory.
+  EIGEN_CI_BUILDDIR: .build
+  # Specify the CMake build target.
+  EIGEN_CI_BUILD_TARGET: ""
+  # If a test regex is specified, that will be selected.
+  # Otherwise, we will try a label if specified.
+  EIGEN_CI_TEST_REGEX: ""
+  EIGEN_CI_TEST_LABEL: ""
 
 include:
-  - "/ci/smoketests.gitlab-ci.yml"
-  - "/ci/build.gitlab-ci.yml"
-  - "/ci/test.gitlab-ci.yml"
+  - "/ci/common.gitlab-ci.yml"
+  - "/ci/build.linux.gitlab-ci.yml"
+  - "/ci/build.windows.gitlab-ci.yml"
+  - "/ci/test.linux.gitlab-ci.yml"
+  - "/ci/test.windows.gitlab-ci.yml"
+  - "/ci/smoketests.linux.gitlab-ci.yml"

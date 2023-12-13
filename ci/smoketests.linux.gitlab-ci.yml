@@ -1,0 +1,33 @@
+smoketests:build:linux:cross:x86-64:gcc-10:default:
+  stage: buildsmoketests
+  extends: build:linux:cross:x86-64:gcc-10:default
+  variables:
+    EIGEN_CI_BUILD_TARGET: "buildsmoketests"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+
+smoketests:build:linux:cross:x86-64:clang-12:default:
+  stage: buildsmoketests
+  extends: build:linux:cross:x86-64:clang-12:default
+  variables:
+    EIGEN_CI_BUILD_TARGET: "buildsmoketests"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+
+smoketests:test:linux:x86-64:gcc-10:default:
+  stage: smoketests
+  extends: .test:linux:x86-64:gcc-10:default
+  variables:
+    EIGEN_CI_TEST_LABEL: smoketests
+  needs: [ "smoketests:build:linux:cross:x86-64:gcc-10:default" ]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+
+smoketests:test:linux:x86-64:clang-12:default:
+  stage: smoketests
+  extends: .test:linux:x86-64:clang-12:default
+  variables:
+    EIGEN_CI_TEST_LABEL: smoketests
+  needs: [ "smoketests:build:linux:cross:x86-64:clang-12:default" ]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
